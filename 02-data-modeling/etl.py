@@ -6,6 +6,16 @@ from sql_queries import *
 
 
 def process_song_file(cur, filepath):
+    """Function processes one JSON formatted song data file.
+
+    The function reads the json file to a Pandas DataFrame and
+    inserts new records to the songs ans artists tables.
+
+    Args:
+        cur (cursor): Instance of psycopg2 cursor.
+        filepath (str): Path to JSON song file.
+
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -19,6 +29,16 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """Function processes one JSON formatted log data file.
+
+    The function reads the json file to a Pandas DataFrame and
+    inserts new records to the songplays and time tables.
+
+    Args:
+        cur (cursor): Instance of psycopg2 cursor.
+        filepath (str): Path to JSON log file.
+
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -30,11 +50,9 @@ def process_log_file(cur, filepath):
     t = pd.to_datetime(df['ts'], unit='ms')
     
     # insert time data records
-    time_data = [df['ts'].values, t.dt.hour.values, t.dt.day.values, t.dt.week.values, t.dt.month.values, t.dt.year.values, t.dt.weekday.values]
+    time_data = ([int(tim.timestamp()), tim.hour, tim.day, tim.week, tim.month, tim.year, tim.weekday()] for tim in t)
     column_labels = ['timestamp', 'hour', 'day', 'week of year', 'month', 'year', 'weekday']
-    time_df = pd.DataFrame(time_data)
-    time_df = time_df.transpose()
-    time_df.columns = column_labels
+    time_df = pd.DataFrame(time_data, columns=column_labels)
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
@@ -64,6 +82,16 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """Function iterates all data files of one type and processes and inserts
+    the data to a databse.
+
+    Args:
+        cur (cursor): Instance of psycopg2 cursor.
+        conn (connection): Instance of psycopg2 connection.
+        filepath (str): Path to log files.
+        func (function): Function to be called to process one file.
+
+    """    
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -83,6 +111,13 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """Function opens a connection to the database and calls functions
+    to process the data.
+    
+    1. Process song data
+    2. Process event log data
+
+    """ 
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
