@@ -19,7 +19,6 @@ time_table_drop = "DROP TABLE IF EXISTS time"
 # STAGING TABLES
 staging_events_table_create = """
 CREATE TABLE IF NOT EXISTS staging_events (
-    event_key BIGINT IDENTITY(0,1) PRIMARY KEY,
     artist VARCHAR,
     auth VARCHAR,
     firstName VARCHAR,
@@ -42,7 +41,6 @@ CREATE TABLE IF NOT EXISTS staging_events (
 
 staging_songs_table_create = """
 CREATE TABLE IF NOT EXISTS staging_songs (
-    song_key BIGINT IDENTITY(0,1) PRIMARY KEY,
     num_songs INT,
     artist_id VARCHAR,
     artist_latitude FLOAT,
@@ -116,9 +114,6 @@ REGION 'us-west-2'
 IAM_ROLE {config['IAM_ROLE']['ARN']}
 FORMAT AS JSON {config['S3']['LOG_JSONPATH']};
 
-DELETE FROM staging_events
-WHERE page != 'NextSong';
-
 ALTER TABLE staging_events
 ADD COLUMN timestamp TIMESTAMP;
 
@@ -166,6 +161,8 @@ INNER JOIN
     songs s ON (e.song = s.title)
 INNER JOIN
     artists a ON (e.artist = a.name)
+WHERE
+    e.page = 'NextSong'
 """)
 
 user_table_insert = ("""
@@ -177,7 +174,9 @@ SELECT DISTINCT
     gender,
     level
 FROM staging_events
-WHERE userId IS NOT NULL
+WHERE 
+    userId IS NOT NULL AND
+    page = 'NextSong'
 """)
 
 song_table_insert = ("""
