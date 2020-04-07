@@ -101,8 +101,8 @@ Execute the following steps to move script files to the cluster, connect to the 
 $ cd /path/to/project
 $ scp dl.cfg etl.py hadoop@<Master public DNS of your cluster>:~/
 $ ssh <SSH connection string of your cluster>
-$ sudo pip install configparser
-$ /usr/bin/spark-submit etl.py
+[hadoop]$ sudo pip install configparser
+[hadoop]$ /usr/bin/spark-submit etl.py
 ```
 
 ## Data analysis
