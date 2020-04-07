@@ -77,6 +77,7 @@ root
 ## Files and folders
 * `dl.cfg` configuration file for the ETL process. 
 * `etl.py` script executes the ETL process.
+* `spark-analytics.ipynb` notebook that can be used as starting point for data analysis.
 
 ## Pre-requisites
 
