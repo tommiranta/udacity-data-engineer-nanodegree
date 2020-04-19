@@ -50,7 +50,7 @@ The following sub-sections summarize my findings. More detailed information abou
 * Furthermore, this resulted in several null values that complicates this issue further.
 * The data has been partitioned into separate files per month. 
 
-LINK TO NOTEBOOK
+Additional information in the [notebook](https://github.com/tompp4/udacity-data-engineer-nanodegree/blob/master/06-capstone-project/notebooks/taxi.ipynb).
 
 ### Weather
 * The data itself is clean and is free from missing values.
@@ -58,7 +58,7 @@ LINK TO NOTEBOOK
 * Each location is separater into own columns.
 * The temperature unit is in Kelvin and needs to be converted into Fahrenheit.
 
-LINK TO NOTEBOOK
+Additional information in the [notebook](https://github.com/tompp4/udacity-data-engineer-nanodegree/blob/master/06-capstone-project/notebooks/weather.ipynb).
 
 ### Precipitation
 * Precipitation data has location information as a station id.
@@ -67,7 +67,7 @@ LINK TO NOTEBOOK
 * These need to be joined and filtered in order to find weather stations in Chicago
 * One weather station contained precipitation data for every day of 2016
 
-LINK TO NOTEBOOK
+Additional information in the [notebook](https://github.com/tompp4/udacity-data-engineer-nanodegree/blob/master/06-capstone-project/notebooks/precipitation.ipynb).
 
 ## Step 3: Define the Data Model
 The data sets turned out to be a bit underwhelming in terms of data modeling. The figure below outlines the final data model:
@@ -281,7 +281,7 @@ This is one clear place for improvement, but due to time restrictions I decided 
 For the capstone project I settled on developing a Spark script instead of integrating the whole execution to Airflow. This seemed like [too big task](https://aws.amazon.com/blogs/big-data/orchestrate-big-data-workflows-with-apache-airflow-genie-and-amazon-emr-part-1/) for this project considering everything else that has already been done.
 
 The Spark part consists of two files in the *spark* folder:
-* `data-preparation.ipynb` that takes a narrative approach how the script was created.
+* `data-preparation.ipynb` that takes a [narrative approach](https://github.com/tompp4/udacity-data-engineer-nanodegree/blob/master/06-capstone-project/spark/data-preparation.ipynb) how the script was created.
 * `data_prep.py`, which is the actual job that will be executed on the EMR cluster.
 
 #### Sparkjob execution
